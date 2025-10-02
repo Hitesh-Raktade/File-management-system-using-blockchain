@@ -1,6 +1,6 @@
 # config.py
 RPC_URL = "http://127.0.0.1:7545"    # Ganache default
-CONTRACT_ADDRESS = "0x5615a35d488f9599592117e60399fe0485263314"
+CONTRACT_ADDRESS = "copy your contract address from remix.com"
 # Path to ABI json file exported from Remix
 ABI_PATH = "abi.json"
 UPLOAD_FOLDER = "uploads"
