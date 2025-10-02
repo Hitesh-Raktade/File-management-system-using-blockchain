@@ -1,7 +1,6 @@
 # Paste below code in remix 
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
-
 contract FileRegistry {
     struct FileInfo {
         string filename;
