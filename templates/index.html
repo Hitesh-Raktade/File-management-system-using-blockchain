@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-5 justify-content-center">
+  <div class="col-md-6 col-lg-4 mb-4">
+    <div class="card p-4 text-center stat-card">
+      <h3 class="card-title mb-1">Total Files Registered</h3>
+      <p class="display-4 font-weight-bold" style="color:rgb(94, 88, 88);">
+        {{ file_count if file_count != "N/A" else "—" }}
+      </p>
+      <p class="text-muted stat-text">Currently secured on the blockchain</p>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4 mb-4">
+    <div class="card p-4 text-center stat-card">
+      <h3 class="card-title mb-1">Blockchain Status</h3>
+      <p class="display-4 font-weight-bold" style="color: var(--button-success-bg);">
+        Online
+      </p>
+      <p class="text-muted stat-text">Connected via RPC</p>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card p-4">
+      <h2 class="mb-4 text-center">Secure File Upload</h2>
+      <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="text-center">
+        <div class="d-flex justify-content-center align-items-center file-drop-area mb-4" id="dropArea">
+          <input type="file" class="file-input-hidden" name="file" id="fileInput" required>
+          <div class="file-drop-text">
+            <p id="fileName" style="color:var(--text-light)">Drag your file here or click to browse</p>
+            <p class="text-muted">All formats supported</p>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-75">Secure & Register on Blockchain</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Stat Card Styles */
+  .stat-card {
+    border: 1px solid var(--border-neon);
+    background: linear-gradient(135deg, rgba(162, 112, 247, 0.1), rgba(59, 13, 111, 0.2));
+    color: white; /* Default text white */
+  }
+  .stat-card .card-title {
+    font-size: 1.1rem;
+    color: white;
+  }
+  .stat-card .stat-text {
+    color: white !important; /* Make description text white */
+  }
+
+  /* File Drop Area Styles */
+  .file-drop-area {
+    border: 2px dashed var(--input-border);
+    border-radius: 12px;
+    padding: 1.5rem; /* Smaller padding */
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    flex-direction: column;
+    max-width: 400px; /* Limit width */
+    margin: 0 auto; /* Center horizontally */
+  }
+  .file-drop-area:hover,
+  .file-drop-area.border-primary {
+    border-color: var(--border-neon);
+    background-color: rgba(162, 112, 247, 0.05);
+  }
+  .file-drop-icon svg {
+    color: var(--text-accent);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    width: 40px; /* Smaller icon */
+    height: 40px;
+  }
+  .file-input-hidden {
+    display: none;
+  }
+  .file-drop-text .text-muted {
+    color: var(--text-light) !important;
+  }
+</style>
+
+<script>
+  const dropArea = document.getElementById('dropArea');
+  const fileInput = document.getElementById('fileInput');
+  const fileName = document.getElementById('fileName');
+
+  // Open file browser on click
+  dropArea.addEventListener('click', () => fileInput.click());
+
+  // Update text when file selected
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+      fileName.textContent = fileInput.files[0].name;
+    } else {
+      fileName.textContent = 'Drag your file here or click to browse';
+    }
+    if (fileInput.files.length > 0) {
+      dropArea.style.borderColor = 'var(--button-success-bg)';
+    } else {
+      dropArea.style.borderColor = 'var(--input-border)';
+    }
+  });
+
+  // Drag & drop support
+  const dragOverClass = 'border-primary';
+  
+  dropArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropArea.classList.add(dragOverClass);
+  });
+
+  dropArea.addEventListener('dragleave', () => {
+    dropArea.classList.remove(dragOverClass);
+  });
+
+  dropArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropArea.classList.remove(dragOverClass);
+    fileInput.files = e.dataTransfer.files;
+    fileInput.dispatchEvent(new Event('change'));
+  });
+</script>
+{% endblock %}
